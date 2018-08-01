@@ -1,27 +1,26 @@
 'use strict';
 import React, {Component} from 'react';
 import {
-    StyleSheet,
-    View,
-    Button, ScrollView, Text, FlatList, TouchableOpacity,
+    View, ScrollView, FlatList,
 } from 'react-native';
 import {connect} from "react-redux";
+import {List, ListItem, Text} from "react-native-elements";
 
 class MyListItem extends Component {
 
     onPress = () => {
-        this.props.onPressItem(this.props.id, this.props.name, this.props.time, this.props.address, );
+        this.props.onPressItem(this.props.id, this.props.name, this.props.time, this.props.address);
     };
 
     render() {
         return (
-            <TouchableOpacity onPress={this.onPress}>
-                <View>
-                    <Text style={styles.text}>
-                        {this.props.name}
-                    </Text>
-                </View>
-            </TouchableOpacity>
+            <ListItem
+                key={this.props.id}
+                title={this.props.name}
+                leftIcon={{name: 'shopping-cart'}}
+                onPressRightIcon={this.onPress}
+                subtitle={this.props.address}
+            />
         );
     }
 }
@@ -34,36 +33,39 @@ class Catalog extends Component<{}> {
         super(props);
     };
 
-    onPressItem = (id, name, time, address) => {
-        this.props.navigation.navigate('Detail', {
-            id: id,
-            name: name,
-            time: time,
-            address: address
-        });
+    renderItem =  ({item}) => {
+        return (
+            <MyListItem
+                id={item.id}
+                onPressItem={this.onPressItem}
+                name={item.name}
+                time={item.time}
+                address={item.address}
+            />
+
+        )
     };
 
-    keyExtractor = (item, index) => String(item.id);
+    keyExtractor = (item) => String(item.id);
 
-    renderItem = ({item}) => (
-        <MyListItem
-            id={item.id}
-            onPressItem={this.onPressItem}
-            name={item.name}
-            time={item.time}
-            address={item.address}
-        />
-    );
+    onPressItem = (id, name, time, address) => {
+        this.props.navigation.navigate('Detail', {id: id, name: name, time: time, address: address});
+    };
+
 
     render() {
         return (
-            <View style={styles.container}>
+            <View >
                 <ScrollView style={{marginBottom: 10}}>
-                    <FlatList
-                        data={this.props.stores}
-                        keyExtractor={this.keyExtractor}
-                        renderItem={this.renderItem}
-                    />
+                    <Text style={{textAlign: 'center', marginTop: 15}} h2>Catalog</Text>
+                    <List>
+                        <FlatList
+                            keyExtractor={this.keyExtractor}
+                            renderItem={this.renderItem}
+                            data={this.props.stores}
+                        />
+                    </List>
+
                 </ScrollView>
 
             </View>
@@ -73,18 +75,6 @@ class Catalog extends Component<{}> {
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        padding: 30,
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-    },
-
-    text: {
-        fontSize: 18,
-    },
-});
 
 const mapStateToProps = (state) => ({
     stores: state

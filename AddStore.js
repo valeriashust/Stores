@@ -1,12 +1,12 @@
 'use strict';
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
     StyleSheet,
     View,
-    Text, TextInput, Button,
 } from 'react-native';
 import {addStore} from "./actions";
-import { connect } from 'react-redux'
+import {connect} from 'react-redux';
+import {FormLabel, FormInput, FormValidationMessage, Button} from 'react-native-elements';
 
 
 class AddStore extends Component<{}> {
@@ -29,10 +29,12 @@ class AddStore extends Component<{}> {
             address: this.state.address,
         };
         this.props.addStore(newStore);
-        this.setState({name: '',
+        this.setState({
+            name: '',
             time: '',
             address: '',
-            id: this.state.id+1});
+            id: this.state.id + 1
+        });
         this.props.navigation.navigate('Home');
 
     };
@@ -40,40 +42,31 @@ class AddStore extends Component<{}> {
     render() {
         return (
             <View style={styles.container}>
-                <View style={{marginBottom: 10}}>
-                <Text style = {styles.text}>Name:</Text>
-                <TextInput
-                    value = {this.state.name}
-                    style={styles.textInput}
-                    onChangeText={(text) => {this.setState({name: text})}}
-                    underlineColorAndroid={'transparent'}
-                />
-                </View>
-                <View style={{marginBottom: 10}}>
-                <Text style = {styles.text}>Open at:</Text>
-                <TextInput
-                    value = {this.state.time}
-                    style={styles.textInput}
-                    placeholder = 'hh:mm - hh:mm'
-                    onChangeText={(text) => {this.setState({time: text})}}
-                    underlineColorAndroid={'transparent'}
-                />
-                </View>
-                <View style={{marginBottom: 10}}>
-                    <Text style = {styles.text}>Address:</Text>
-                    <TextInput
-                        value = {this.state.address}
-                        style={styles.textInput}
-                        onChangeText={(text) => {this.setState({address: text})}}
-                        underlineColorAndroid={'transparent'}
-                    />
-                </View>
-                <View style={{marginBottom: 10}}>
-                    <Button
-                        onPress={this.onApplyPress}
-                        color='#9900CC'
-                        title='Apply'/>
-                </View>
+
+                <FormLabel>NAME</FormLabel>
+                <FormInput inputStyle={styles.textInput} underlineColorAndroid={'grey'} onChangeText={(text) => {
+                    this.setState({name: text})
+                }}/>
+
+                <FormLabel>OPEN AT</FormLabel>
+                <FormInput inputStyle={styles.textInput} underlineColorAndroid={'grey'} onChangeText={(text) => {
+                    this.setState({time: text})
+                }}/>
+
+                <FormLabel>ADDRESS</FormLabel>
+                <FormInput inputStyle={styles.textInput} underlineColorAndroid={'grey'} onChangeText={(text) => {
+                    this.setState({address: text})
+                }}/>
+
+                <Button
+                    icon={{name: 'check'}}
+                    onPress={this.onApplyPress}
+                    backgroundColor='#9900CC'
+                    fontFamily='Lato'
+                    buttonStyle={{borderRadius: 50, marginLeft: 0, marginRight: 0, marginBottom: 0, marginTop: 15}}
+                    title='APPLY'/>
+
+
             </View>
 
 
@@ -90,18 +83,10 @@ const styles = StyleSheet.create({
     },
 
     textInput: {
-        height: 40,
-        width: '100%',
         fontSize: 18,
-        borderWidth: 1,
-        borderColor: 'black',
-        borderRadius: 8,
         color: 'black',
     },
 
-    text: {
-       fontSize: 18,
-    },
 });
 
 const mapStateToProps = (state) => ({

@@ -6,7 +6,8 @@ import Catalog from './Catalog';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import reducer from './reducers';
-import StoreDetails from './StoreDetails'
+import StoreDetails from './StoreDetails';
+import Map from './Map';
 
 export const store = createStore(reducer,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
@@ -56,6 +57,9 @@ const AppShow = createBottomTabNavigator(
 const Stack = createStackNavigator({
     Home: AppShow,
     Detail: StoreDetails
+},
+{
+    headerMode: 'none',
 });
 
 
