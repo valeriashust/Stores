@@ -17,13 +17,17 @@ class AddStore extends Component<{}> {
             name: '',
             time: '',
             address: '',
-            id: 0,
+            error: false,
         }
     }
 
     onApplyPress = () => {
+        if (this.state.name === '' || this.state.time === '' || this.state.address === '') {
+            this.setState({error: true});
+            return;
+        }
+
         let newStore = {
-            id: this.state.id,
             name: this.state.name,
             time: this.state.time,
             address: this.state.address,
@@ -33,30 +37,38 @@ class AddStore extends Component<{}> {
             name: '',
             time: '',
             address: '',
-            id: this.state.id + 1
         });
         this.props.navigation.navigate('Home');
 
     };
 
     render() {
+        const errorMessage = this.state.error ?
+            <FormValidationMessage>{'All fields are required!'}</FormValidationMessage> :
+            null;
         return (
+
             <View style={styles.container}>
 
+
                 <FormLabel>NAME</FormLabel>
-                <FormInput inputStyle={styles.textInput} underlineColorAndroid={'grey'} onChangeText={(text) => {
-                    this.setState({name: text})
-                }}/>
+                <FormInput value={this.state.name} inputStyle={styles.textInput} underlineColorAndroid={'grey'}
+                           onChangeText={(text) => {
+                               this.setState({name: text})
+                           }}/>
 
                 <FormLabel>OPEN AT</FormLabel>
-                <FormInput inputStyle={styles.textInput} underlineColorAndroid={'grey'} onChangeText={(text) => {
-                    this.setState({time: text})
-                }}/>
+                <FormInput value={this.state.time} inputStyle={styles.textInput} underlineColorAndroid={'grey'}
+                           onChangeText={(text) => {
+                               this.setState({time: text})
+                           }}/>
 
                 <FormLabel>ADDRESS</FormLabel>
-                <FormInput inputStyle={styles.textInput} underlineColorAndroid={'grey'} onChangeText={(text) => {
-                    this.setState({address: text})
-                }}/>
+                <FormInput value={this.state.address} inputStyle={styles.textInput} underlineColorAndroid={'grey'}
+                           onChangeText={(text) => {
+                               this.setState({address: text})
+                           }}/>
+                {errorMessage}
 
                 <Button
                     icon={{name: 'check'}}
@@ -90,7 +102,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-    stores: state
+    stores: state.stores
 });
 
 const mapDispatchToProps = dispatch => ({

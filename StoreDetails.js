@@ -1,8 +1,7 @@
 'use strict';
 import React, {Component} from 'react';
 import {
-    StyleSheet,
-    View, TextInput, Text,
+    StyleSheet, TextInput, Text,
 } from 'react-native';
 import {connect} from "react-redux";
 import {editStore} from "./actions";
@@ -33,7 +32,6 @@ class StoreDetails extends Component {
     render() {
 
         return (
-
                 <Card
                     title={this.state.name}
                     image={require('./images/vhod-v-magazin-2.jpg')}>
@@ -79,7 +77,7 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = (state) => ({
-    stores: state
+    stores: state.stores
 });
 
 const mapDispatchToProps = dispatch => ({

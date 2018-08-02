@@ -2,14 +2,13 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    View, TextInput, Text,
+    View
 } from 'react-native';
-import {connect} from "react-redux";
-import {editStore} from "./actions";
-import {Card, Button} from "react-native-elements";
+import MapView, {Marker} from "react-native-maps";
 
 
-export default class StoreDetails extends Component {
+
+export default class Map extends Component {
 
 
     constructor(props) {
@@ -21,37 +20,26 @@ export default class StoreDetails extends Component {
 
         return (
 
-            <Card
-                title={this.state.name}
-                image={require('./images/vhod-v-magazin-2.jpg')}>
-                <Text>Name:</Text>
+            <View style={styles.container}>
+                <MapView style={styles.map}
+                         region={{
+                             latitude: 53.944345,
+                             longitude: 27.696361,
+                             latitudeDelta: 0.1,
+                             longitudeDelta: 0.1,
+                         }}>
 
-                <TextInput style={styles.text} value={this.state.name} onChangeText={(text) => {
-                    this.setState({name: text})
-                }}>
-                </TextInput>
+                    <Marker
+                             coordinate={{
+                                 latitude: 53.944345,
+                                 longitude: 27.696361,
+                             }}
+                                    title={'Tittle'}
+                                    description={'description'}
 
-                <Text>Open at:</Text>
-
-                <TextInput style={styles.text} value={this.state.time} onChangeText={(text) => {
-                    this.setState({time: text})
-                }}>
-                </TextInput>
-
-                <Text>Address:</Text>
-
-                <TextInput style={styles.text} value={this.state.address} onChangeText={(text) => {
-                    this.setState({address: text})
-                }}>
-                </TextInput>
-                <Button
-                    icon={{name: 'save'}}
-                    onPress={this.onSavePress}
-                    backgroundColor='#9900CC'
-                    fontFamily='Lato'
-                    buttonStyle={{borderRadius: 50, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                    title='SAVE' />
-            </Card>
+                    />
+                </MapView>
+            </View>
 
         );
     }
@@ -59,7 +47,11 @@ export default class StoreDetails extends Component {
 
 const styles = StyleSheet.create({
 
-    text: {
-        fontSize: 18,
-    },
+        container: {
+            ...StyleSheet.absoluteFillObject,
+        },
+        map: {
+            ...StyleSheet.absoluteFillObject,
+        },
+
 });

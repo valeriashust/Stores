@@ -1,10 +1,11 @@
 'use strict';
 import React, {Component} from 'react';
 import {
-    View, ScrollView, FlatList,
+    View, ScrollView, FlatList, Text, StyleSheet
 } from 'react-native';
 import {connect} from "react-redux";
-import {List, ListItem, Text} from "react-native-elements";
+import {Header, List, ListItem} from "react-native-elements";
+
 
 class MyListItem extends Component {
 
@@ -33,7 +34,7 @@ class Catalog extends Component<{}> {
         super(props);
     };
 
-    renderItem =  ({item}) => {
+    renderItem = ({item}) => {
         return (
             <MyListItem
                 id={item.id}
@@ -42,7 +43,6 @@ class Catalog extends Component<{}> {
                 time={item.time}
                 address={item.address}
             />
-
         )
     };
 
@@ -52,22 +52,38 @@ class Catalog extends Component<{}> {
         this.props.navigation.navigate('Detail', {id: id, name: name, time: time, address: address});
     };
 
+    onPressAdd = () => {
+        this.props.navigation.navigate('AddStore');
+    };
+
+    onPressMap = () => {
+        this.props.navigation.navigate('Map');
+    };
 
     render() {
+
+        const content = this.props.stores.length < 1 ?
+            <Text style={styles.instructions}>Press 'Add' button to add a new store to the list!</Text> :
+            <ScrollView style={{marginBottom: 10}}>
+                <List>
+                    <FlatList
+                        keyExtractor={this.keyExtractor}
+                        renderItem={this.renderItem}
+                        data={this.props.stores}
+                    />
+                </List>
+            </ScrollView>;
+
         return (
-            <View >
-                <ScrollView style={{marginBottom: 10}}>
-                    <Text style={{textAlign: 'center', marginTop: 15}} h2>Catalog</Text>
-                    <List>
-                        <FlatList
-                            keyExtractor={this.keyExtractor}
-                            renderItem={this.renderItem}
-                            data={this.props.stores}
-                        />
-                    </List>
-
-                </ScrollView>
-
+            <View>
+                <Header
+                    statusBarProps={{barStyle: 'light-content'}}
+                    outerContainerStyles={{backgroundColor: '#9900CC', height: 55}}
+                    leftComponent={{icon: 'map', color: '#fff', onPress: this.onPressMap}}
+                    centerComponent={{text: 'CATALOG', style: {color: '#fff'}}}
+                    rightComponent={{icon: 'add', color: '#fff', onPress: this.onPressAdd}}
+                />
+                {content}
             </View>
 
 
@@ -75,9 +91,17 @@ class Catalog extends Component<{}> {
     }
 }
 
+const styles = StyleSheet.create({
+
+    instructions: {
+        marginTop: '50%',
+        textAlign: 'center',
+        color: '#333333',
+    },
+});
 
 const mapStateToProps = (state) => ({
-    stores: state
+    stores: state.stores
 });
 
 export default connect(

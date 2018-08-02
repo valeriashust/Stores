@@ -1,17 +1,35 @@
 'use strict';
 import AddStore from './AddStore';
 import React, {Component} from 'react'
-import {createBottomTabNavigator, createStackNavigator} from 'react-navigation';
+
+import {createStackNavigator} from 'react-navigation';
 import Catalog from './Catalog';
 import {Provider} from 'react-redux';
-import {createStore} from 'redux';
-import reducer from './reducers';
 import StoreDetails from './StoreDetails';
 import Map from './Map';
+import { PersistGate } from 'redux-persist/integration/react';
+import { createStore } from 'redux'
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage' // defaults to localStorage for web and AsyncStorage for react-native
 
-export const store = createStore(reducer,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+import reducer from './reducers';
+
+const persistConfig = {
+    key: 'root',
+    storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, reducer);
+
+let store = createStore(persistedReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+let persistor = persistStore(store);
+
+
+
 
 import {YellowBox} from 'react-native';
+
+
 
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
@@ -21,45 +39,29 @@ export default class App extends Component<{}> {
 
     constructor(props) {
         super(props);
-    }
+    };
 
     render() {
         return (
             <Provider store={store}>
-                <Stack/>
+                <PersistGate loading={null} persistor={persistor}>
+                    <Stack/>
+                </PersistGate>
             </Provider>
         );
     }
 }
 
-const AppShow = createBottomTabNavigator(
-    {
+
+
+const Stack = createStackNavigator({
         Home: Catalog,
+        Detail: StoreDetails,
         AddStore: AddStore,
         Map: Map,
     },
     {
-        tabBarOptions: {
-            activeTintColor: 'black',
-            activeBackgroundColor: '#c57fec',
-            labelStyle: {
-                fontSize: 18,
-                color: 'white',
-            },
-            style: {
-                backgroundColor: '#a6a4ac',
-                height: 35,
-            },
-        },
-    }
-);
-
-const Stack = createStackNavigator({
-    Home: AppShow,
-    Detail: StoreDetails
-},
-{
-    headerMode: 'none',
-});
+        headerMode: 'none',
+    });
 
 
