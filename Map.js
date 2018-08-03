@@ -5,10 +5,13 @@ import {
     View
 } from 'react-native';
 import MapView, {Marker} from "react-native-maps";
+import {addingStore} from "./actions";
+import {connect} from "react-redux";
 
 
 
-export default class Map extends Component {
+
+class Map extends Component {
 
 
     constructor(props) {
@@ -21,23 +24,17 @@ export default class Map extends Component {
         return (
 
             <View style={styles.container}>
-                <MapView style={styles.map}
-                         region={{
-                             latitude: 53.944345,
-                             longitude: 27.696361,
-                             latitudeDelta: 0.1,
-                             longitudeDelta: 0.1,
-                         }}>
+                <MapView style={styles.map}>
 
-                    <Marker
-                             coordinate={{
-                                 latitude: 53.944345,
-                                 longitude: 27.696361,
-                             }}
-                                    title={'Tittle'}
-                                    description={'description'}
-
-                    />
+                    {this.props.stores.map(store => (
+                        <MapView.Marker
+                            key={store.id}
+                            coordinate={{latitude: store.position.lat,
+                                longitude: store.position.lng}}
+                            title={store.name}
+                            description={store.time}
+                        />
+                    ))}
                 </MapView>
             </View>
 
@@ -55,3 +52,13 @@ const styles = StyleSheet.create({
         },
 
 });
+
+const mapStateToProps = (state) => ({
+    stores: state.stores
+});
+
+
+
+export default connect(
+    mapStateToProps
+)(Map)

@@ -61,7 +61,7 @@ class StoreDetails extends Component {
                         backgroundColor='#9900CC'
                         fontFamily='Lato'
                         buttonStyle={{borderRadius: 50, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                        title='SAVE' />
+                        title='SAVE CHANGES' />
                 </Card>
 
         );

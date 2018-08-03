@@ -1,10 +1,11 @@
 'use strict';
 import React, {Component} from 'react';
 import {
+    ActivityIndicator,
     StyleSheet,
     View,
 } from 'react-native';
-import {addStore} from "./actions";
+import {addingStore} from "./actions";
 import {connect} from 'react-redux';
 import {FormLabel, FormInput, FormValidationMessage, Button} from 'react-native-elements';
 
@@ -32,7 +33,7 @@ class AddStore extends Component<{}> {
             time: this.state.time,
             address: this.state.address,
         };
-        this.props.addStore(newStore);
+        this.props.addingStore(newStore);
         this.setState({
             name: '',
             time: '',
@@ -46,10 +47,9 @@ class AddStore extends Component<{}> {
         const errorMessage = this.state.error ?
             <FormValidationMessage>{'All fields are required!'}</FormValidationMessage> :
             null;
-        return (
-
-            <View style={styles.container}>
-
+        const content = this.props.loading ?
+            <ActivityIndicator size="small" color="#9900CC" /> :
+            <View>
 
                 <FormLabel>NAME</FormLabel>
                 <FormInput value={this.state.name} inputStyle={styles.textInput} underlineColorAndroid={'grey'}
@@ -77,7 +77,12 @@ class AddStore extends Component<{}> {
                     fontFamily='Lato'
                     buttonStyle={{borderRadius: 50, marginLeft: 0, marginRight: 0, marginBottom: 0, marginTop: 15}}
                     title='APPLY'/>
+            </View>;
+        return (
 
+            <View style={styles.container}>
+
+                {content}
 
             </View>
 
@@ -102,11 +107,12 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-    stores: state.stores
+    stores: state.stores,
+    loading: state.loading,
 });
 
 const mapDispatchToProps = dispatch => ({
-    addStore: (store) => dispatch(addStore(store))
+    addingStore: (store) => dispatch(addingStore(store))
 });
 
 

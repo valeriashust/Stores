@@ -8,11 +8,13 @@ import {Provider} from 'react-redux';
 import StoreDetails from './StoreDetails';
 import Map from './Map';
 import { PersistGate } from 'redux-persist/integration/react';
-import { createStore } from 'redux'
+import {applyMiddleware, createStore} from 'redux'
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web and AsyncStorage for react-native
-
+import {YellowBox} from 'react-native';
+import {composeWithDevTools} from "redux-devtools-extension";
 import reducer from './reducers';
+import thunk from 'redux-thunk';
 
 const persistConfig = {
     key: 'root',
@@ -21,14 +23,8 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, reducer);
 
-let store = createStore(persistedReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+let store = createStore(persistedReducer, composeWithDevTools(applyMiddleware(thunk)));
 let persistor = persistStore(store);
-
-
-
-
-import {YellowBox} from 'react-native';
-
 
 
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
