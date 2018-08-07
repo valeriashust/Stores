@@ -4,25 +4,12 @@ import {
     StyleSheet,
     View
 } from 'react-native';
-import MapView, {Marker} from "react-native-maps";
-import {addingStore} from "./actions";
-import {connect} from "react-redux";
+import MapView from "react-native-maps";
 
 
-
-
-class Map extends Component {
-
-
-    constructor(props) {
-        super(props);
-    }
-
-
+export default class Map extends Component {
     render() {
-
         return (
-
             <View style={styles.container}>
                 <MapView style={styles.map}>
 
@@ -37,28 +24,21 @@ class Map extends Component {
                     ))}
                 </MapView>
             </View>
-
         );
     }
-};
+}
 
 const styles = StyleSheet.create({
 
-        container: {
-            ...StyleSheet.absoluteFillObject,
-        },
-        map: {
-            ...StyleSheet.absoluteFillObject,
-        },
+    container: {
+        ...StyleSheet.absoluteFillObject,
+    },
+    map: {
+        ...StyleSheet.absoluteFillObject,
+    },
 
 });
 
-const mapStateToProps = (state) => ({
-    stores: state.stores
-});
 
 
 
-export default connect(
-    mapStateToProps
-)(Map)

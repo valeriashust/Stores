@@ -1,10 +1,6 @@
-import {ADD_STORE, EDIT_STORE, SET_LOADING} from "./actions";
+import {ADD_STORE, EDIT_STORE, SET_LOADING} from "../actions/actions";
 
-
-
-
-
-function reducer(state = {stores: [], currentId: 0, loading: false}, action) {
+export default function stores(state = {stores: [], currentId: 0, loading: false}, action) {
     switch (action.type) {
         case ADD_STORE: {
 
@@ -28,7 +24,3 @@ function reducer(state = {stores: [], currentId: 0, loading: false}, action) {
         }
     }
 }
-
-
-
-export default reducer;
