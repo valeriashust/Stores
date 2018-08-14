@@ -1,14 +1,14 @@
-import {SUCCESS} from "../actions/actions";
+import {SET_SUCCESS} from '../actions/actions';
 
-export default function success(state = false, action) {
+function success(state = false, action) {
     switch (action.type) {
-
-        case SUCCESS: {
+        case SET_SUCCESS: {
             return action.state;
         }
-
         default: {
             return state
         }
     }
 }
+
+export default success;

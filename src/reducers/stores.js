@@ -1,18 +1,20 @@
-import {ADD_STORE, EDIT_STORE, SET_LOADING} from "../actions/actions";
+import {ADD_STORE, EDIT_STORE, SET_LOADING} from '../actions/actions';
 
-export default function stores(state = {stores: [], currentId: 0, loading: false}, action) {
+function stores(state = {items: [], currentId: 0, loading: false}, action) {
     switch (action.type) {
         case ADD_STORE: {
-
             let newStore = {...action.store, id: state.currentId};
             return {
-                ...state, stores: [...state.stores, newStore], currentId: state.currentId + 1
-            }
+                ...state,
+                items: [...state.items, newStore],
+                currentId: state.currentId + 1,
+            };
         }
+
         case EDIT_STORE:
             return {
                 ...state,
-                stores: state.stores.map(item => (item.id === action.id) ? {...item, ...action.store} : item)
+                items: state.items.map(item => (item.id === action.id) ? {...item, ...action.newInfo} : item)
             };
 
         case SET_LOADING: {
@@ -20,7 +22,9 @@ export default function stores(state = {stores: [], currentId: 0, loading: false
         }
 
         default: {
-            return state
+            return state;
         }
     }
 }
+
+export default stores;

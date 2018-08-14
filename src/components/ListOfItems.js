@@ -1,53 +1,55 @@
-import React, {Component} from 'react';
-import {
-    ScrollView, FlatList, Text, StyleSheet
-} from 'react-native';
-import {List} from "react-native-elements";
-import MyListItem from "./MyListItem";
+import React, {Component,} from 'react';
+import {ScrollView, FlatList, StyleSheet,} from 'react-native';
+import {List,} from 'react-native-elements';
+import Item from './Item';
+import PropTypes  from 'prop-types';
 
-export default class ListOfItems extends Component {
+const propTypes = {
+    navigateToDetails: PropTypes.func.isRequired,
+    stores: PropTypes.array.isRequired,
+};
+const styles = StyleSheet.create(
+    {
+        scrollViewStyle: {
+            marginBottom: 10,
+        },
+    },
+);
 
-    onPressItem = (id, name, time, address) => {
-        this.props.navigate({id: id, name: name, time: time, address: address});
+class ListOfItems extends Component {
+
+    onPressItem = (currentStoreId) => {
+        this.props.navigateToDetails(currentStoreId);
     };
 
     renderItem = ({item}) => {
         return (
-            <MyListItem
+            <Item
                 id={item.id}
                 onPressItem={this.onPressItem}
                 name={item.name}
-                time={item.time}
                 address={item.address}
             />
-        )
+        );
     };
 
     keyExtractor = (item) => String(item.id);
 
     render() {
-
         return (
-            this.props.stores.length < 1 ?
-                <Text style={styles.instructions}>Press 'Add' button to add a new store to the list!</Text> :
-                <ScrollView style={{marginBottom: 10}}>
-                    <List>
-                        <FlatList
-                            keyExtractor={this.keyExtractor}
-                            renderItem={this.renderItem}
-                            data={this.props.stores}
-                        />
-                    </List>
-                </ScrollView>
+            <ScrollView style={styles.scrollViewStyle}>
+                <List>
+                    <FlatList
+                        keyExtractor={this.keyExtractor}
+                        renderItem={this.renderItem}
+                        data={this.props.stores}
+                    />
+                </List>
+            </ScrollView>
         );
-    }
+    };
 }
 
-const styles = StyleSheet.create({
+ListOfItems.propTypes = propTypes;
 
-    instructions: {
-        marginTop: '50%',
-        textAlign: 'center',
-        color: '#333333',
-    },
-});
+export default ListOfItems;
