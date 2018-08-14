@@ -1,79 +1,92 @@
-'use strict';
-import React, {Component} from 'react';
-import {
-    StyleSheet, TextInput, Text,
-} from 'react-native';
-import {Card, Button} from "react-native-elements";
+import React, {Component,} from 'react';
+import {TextInput, Text, StyleSheet,} from 'react-native';
+import {Card, Button,} from 'react-native-elements';
+import PropTypes from 'prop-types';
 
+const propTypes = {
+    navigation: PropTypes.object.isRequired,
+    stores: PropTypes.array.isRequired,
+    editStore: PropTypes.func.isRequired,
+};
+const styles = StyleSheet.create(
+    {
+        textInput: {
+            fontSize: 18,
+            color: 'black',
+        },
 
-export default class StoreDetails extends Component {
+        buttonStyle: {
+            borderRadius: 50,
+            marginLeft: 0,
+            marginRight: 0,
+            marginBottom: 0,
+            marginTop: 20,
+        },
+    },
+);
 
-    static navigationOptions = {title: 'Information'};
+class StoreDetails extends Component {
 
     constructor(props) {
         super(props);
-        const {params} = this.props.navigation.state;
-        this.state = {
-            id: params.id,
-            name: params.name,
-            time: params.time,
-            address: params.address,
-        }
-    }
 
-    onSavePress = () => {
-        this.props.editStore(this.state.id, {
+        const {params} = this.props.navigation.state;
+
+        this.currentStoreId = params.id;
+        this.currentStoreInfo = this.props.stores.find(store => store.id === this.currentStoreId);
+        this.state = {
+            name: this.currentStoreInfo.name,
+            time: this.currentStoreInfo.time,
+        };
+    };
+
+    onSaveButtonPress = () => {
+        let newStoreInfo = {
             name: this.state.name,
             time: this.state.time,
-            address: this.state.address
-        });
+        };
+        this.props.editStore(
+            this.currentStoreId,
+            newStoreInfo
+        );
         this.props.navigation.navigate('Home');
     };
 
-
     render() {
-
         return (
             <Card
                 title={this.state.name}
-                image={require('../../images/vhod-v-magazin-2.jpg')}>
+                image={require('../../images/vhod-v-magazin-2.jpg')}
+            >
                 <Text>Name:</Text>
-
-                <TextInput style={styles.text} value={this.state.name} onChangeText={(text) => {
-                    this.setState({name: text})
-                }}>
+                <TextInput
+                    style={styles.textInput}
+                    value={this.state.name}
+                    onChangeText={(text) => {this.setState({name: text})}}
+                >
                 </TextInput>
-
                 <Text>Open at:</Text>
-
-                <TextInput style={styles.text} value={this.state.time} onChangeText={(text) => {
-                    this.setState({time: text})
-                }}>
+                <TextInput
+                    style={styles.textInput}
+                    value={this.state.time}
+                    onChangeText={(text) => {this.setState({time: text})}}
+                >
                 </TextInput>
-
                 <Text>Address:</Text>
-
-                <Text style={{
-                    fontSize: 18,
-                    color: 'black', marginTop: 10
-                }}>{this.state.address}</Text>
+                <Text style={styles.textInput}>{this.currentStoreInfo.address}</Text>
                 <Button
                     icon={{name: 'save'}}
-                    onPress={this.onSavePress}
+                    onPress={this.onSaveButtonPress}
                     backgroundColor='#9900CC'
                     fontFamily='Lato'
-                    buttonStyle={{borderRadius: 50, marginLeft: 0, marginRight: 0, marginBottom: 0, marginTop: 20}}
-                    title='SAVE CHANGES'/>
+                    buttonStyle={styles.buttonStyle}
+                    title='SAVE CHANGES'
+                />
             </Card>
-
         );
-    }
+    };
 }
 
-const styles = StyleSheet.create({
-    text: {
-        fontSize: 18,
-    },
-});
+StoreDetails.propTypes = propTypes;
 
-
+export default StoreDetails;

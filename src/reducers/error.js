@@ -1,15 +1,14 @@
-import {ERROR} from "../actions/actions";
+import {SET_ERROR} from '../actions/actions';
 
-
-export default function error(state = false, action) {
+function error(state = false, action) {
     switch (action.type) {
-
-        case ERROR: {
+        case SET_ERROR: {
             return action.state;
         }
-
         default: {
             return state
         }
     }
 }
+
+export default error;
